@@ -6,6 +6,7 @@ use App\accountModel;
 use App\cartModel;
 use App\productModel;
 use App\slideModel;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
@@ -13,16 +14,47 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Validator;
 use WindowsAzure\Common\Internal\Validate;//thư viện đăng nhập
 
 class AdminController extends Controller
 {
+    //Đăng ký
+    public function getSignIn() {
+        return view('admin.sign-in');
+    }
+    public function postSignIn(Request $request) {
+        $this->validate(
+            [
+                'email'=>'required|email|unique:users,email',
+                'password'=>'required|min:6|max:20',
+                'name'=>'required|',
+                're_password'=>'required|same:password'
+            ],
+            [
+                'email.required'=>'Vui lòng nhập E-mail',
+                'email.email'=>'Không đúng định dạng E-mail',
+                'email.unique'=>'E-mail đã có người sử dụng',
+                'password.required'=>'Vui lòng nhập Password',
+                're_password.same'=>'Mật khẩu không giống nhau',
+                'password.min'=>'Mật khẩu ít nhất 6 ký tự'
+            ]);
+        $user = new User();
+        $user -> name = $request->name;
+        $user -> email= $request->email;
+        $user -> password = Hash::make($request->password);
+        $user -> phone = $request->phone;
+        $user -> address = $request->address;
+        $user -> save();
+        return redirect() -> back() -> with('thongbao','Đã tạo tài khoản thành công');
+    }
+
     //Đăng nhập
-    public function getLoginAdmin() {
+    public function getLogin() {
         return view('admin.login');
     }
-//    public function postLoginAdmin(Request $request) {
+    public function postLogin(Request $request) {
 //        $this->validate($request, [
 //            'email'=>'required',
 //            'passwork'=>'required|min:3|max:32'
@@ -33,18 +65,18 @@ class AdminController extends Controller
 //                'password.max'=>'Password không được lớn hơn 32 ký tự'
 //            ]
 //        );
-//
-//        if (Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
-//            return redirect('admin/index');
-//        } else {
-//            return redirect('admin/login')->with('thongbao','Đăng nhập không thành công!');
-//        }
-//    }
+
+        if (Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
+            return redirect('admin/index');
+        } else {
+            return redirect('admin/login')->with('thongbao','Đăng nhập không thành công!');
+        }
+    }
     //đăng xuất
-//    public function getLogoutAdmin() {
-//        Auth::logout();
-//        return view('admin.login');
-//    }
+    public function getLogoutAdmin() {
+        Auth::logout();
+        return view('admin.login');
+    }
 
     public function getAdmin(){
         $product = productModel::select('*')->get();

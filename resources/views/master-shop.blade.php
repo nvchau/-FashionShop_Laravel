@@ -86,7 +86,7 @@
                             <li><a href="{{route('about')}}">About</a></li>
                             <li><a href="{{route('contact')}}">Contact</a></li>
                             <li><a href="{{route('cart')}}"><i class="icon-shopping-cart"></i> Cart [@if(Session::has('cart')){{Session('cart')->totalQty}} @else 0 @endif]</a></li>
-                            {{--<li><a href="{{route('login')}}">Admin</a></li>--}}
+                            <li><a href="{{route('Login')}}">Login</a></li>
                         </ul>
                     </div>
                 </div>

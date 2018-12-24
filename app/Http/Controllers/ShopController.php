@@ -42,7 +42,7 @@ class ShopController extends Controller
     public function getProductsDetails(Request $req) {
         //Receive request and query sql
         $productDetails = productModel::where('id', $req->id)->first();
-        $productFeature = productModel::where('feature_id', 1)->get();
+//        $productFeature = productModel::where('feature_id', 1)->get();
         return view('page.product-detail', compact('productDetails', 'productFeature'));
     }
 

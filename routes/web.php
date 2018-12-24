@@ -47,13 +47,28 @@ Route::group(['prefix'=>'cshop'], function(){
 });
 Route::get('ordercomplete',['as'=>'ordercomplete','uses'=>'ShopController@getOrderComplete']);
 
-//đăng nhập
-Route::get('admin/login',['as'=>'login','uses'=>'AdminController@getLoginAdmin']);
-Route::post('admin/login',['as'=>'login','uses'=>'AdminController@postLoginAdmin']);
-//đăng xuất
-Route::get('admin/logout',['as'=>'logout','uses'=>'AdminController@getLogoutAdmin']);
+////đăng nhập
+//Route::get('admin/login',['as'=>'login','uses'=>'AdminController@getLoginAdmin']);
+//Route::post('admin/login',['as'=>'login','uses'=>'AdminController@postLoginAdmin']);
+////đăng xuất
+//Route::get('admin/logout',['as'=>'logout','uses'=>'AdminController@getLogoutAdmin']);
 
-Route::group(['prefix'=>'admin','middleware'=>'login'], function(){
+//Đăng ký
+Route::get('sign-in',['as'=>'sign-up','uses'=>'AdminController@getSignIn']);
+Route::post('sign-in',['as'=>'sign-up','uses'=>'AdminController@postSignIn']);
+
+//Đăng nhập
+Route::get('login', ['as' => 'Login', 'uses' => 'AdminController@getLogin']);
+Route::post('login', ['as' => 'Login', 'uses' => 'AdminController@postLogin']);
+Route::get('logout', ['as' => 'Logout', 'uses' => 'AdminController@getLogout']);
+
+Route::group(['middleware' => 'checkAdminLogin', 'prefix' => 'admin', 'namespace' => 'Admin'], function() {
+    Route::get('/', function() {
+        return view('admin.index');
+    });
+});
+
+Route::group(['prefix'=>'admin'], function(){
 
     Route::get('index',['as'=>'admin','uses'=>'AdminController@getAdmin']);
 
@@ -74,7 +89,3 @@ Route::group(['prefix'=>'admin','middleware'=>'login'], function(){
 });
 
 
-
-Auth::routes();
-
-Route::get('/login', 'HomeController@index')->name('login');
