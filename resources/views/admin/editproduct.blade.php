@@ -7,8 +7,8 @@
                 <form action=""  method="post" data-parsley-validate="">
                     <input type="hidden" name="_token" value="{!! csrf_token() !!}">
                     <div class="form-group">
-                        <label for="typeproduct_id">typeproduct_id</label>
-                        <input id="typeproduct_id" type="text" name="typeproduct_id" data-parsley-trigger="change" required="" class="form-control" value="{!! old('typeproduct_id',isset($edit_product ) ? $edit_product ['typeproduct_id'] : null)!!}">
+                        <label for="id_type">Type ID</label>
+                        <input id="id_type" type="text" name="id_type" data-parsley-trigger="change" required="" class="form-control" value="{!! old('id_type',isset($edit_product ) ? $edit_product ['id_type'] : null)!!}">
                     </div>
                     <div class="form-group">
                         <label for="ten"> Tên </label>
@@ -23,8 +23,9 @@
                         <input id="moTa" type="text" name="moTa" data-parsley-trigger="change" required="" class="form-control" value="{!! old('moTa',isset($edit_product ) ? $edit_product ['moTa'] : null) !!}">
                     </div>
                     <div class="form-group">
-                        <label for="linkAnh"> Link Ảnh </label>
-                        <input id="linkAnh" type="text" name="linkAnh" data-parsley-trigger="change" required="" class="form-control" value="{!! old('linkAnh',isset($edit_product ) ? $edit_product ['linkAnh'] : null) !!}">
+                        <label for="linkAnh"> Tải ảnh mới lên </label>
+                        <input id="anh" type="file" name="anh" data-parsley-trigger="change" required="" class="form-control" value="{!! old('linkAnh',isset($edit_product ) ? $edit_product ['linkAnh'] : null) !!}">
+                        {{--<input id="linkAnh" type="text" name="linkAnh" data-parsley-trigger="change" required="" class="form-control" value="{!! old('linkAnh',isset($edit_product ) ? $edit_product ['linkAnh'] : null) !!}">--}}
                     </div>
                     <div class="row">
                         <div class="col-6">

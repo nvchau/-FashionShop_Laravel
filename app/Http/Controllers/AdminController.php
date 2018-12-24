@@ -72,11 +72,20 @@ class AdminController extends Controller
     public function postEditproduct(Request $Request,$id)
     {
         $edit_product = productModel::find($id);
-        $edit_product->typeproduct_id = $Request->typeproduct_id;
+        $edit_product->id_type = $Request->id_type;
         $edit_product->ten = $Request->ten;
         $edit_product->gia = $Request->gia;
         $edit_product->moTa = $Request->moTa;
-        $edit_product->linkAnh = $Request->linkAnh;
+//        $edit_product->linkAnh = $Request->linkAnh;
+
+        if ($Request->hasFile('anh')) {
+            $anh = $Request->anh;
+            $anh -> move(public_path('/shop/images/'), $anh->getClientOriginalName());
+            $link = 'shop/images/'.$anh->getClientOriginalName();
+            $edit_product->linkAnh = $link;
+        } else {
+            $edit_product->linkAnh = $edit_product->linkAnh;
+        }
 
         $edit_product->save();
         return redirect()->route('product-list')-> with(['flash_level'=>'success','flash_message'=>'Sửa sản phẩm thành công!']);
@@ -93,11 +102,26 @@ class AdminController extends Controller
     public function postAddproduct(Request $Request)
     {
         $product = new productModel();
-        $product->typeproduct_id = $Request->typeproduct_id;
+        $product->id_type = $Request->id_type;
         $product->ten = $Request->ten;
         $product->gia = $Request->gia;
         $product->moTa = $Request->moTa;
-        $product->linkAnh = $Request->linkAnh;
+//        $product->linkAnh = $Request->linkAnh;
+
+//      Procces upload file
+        if ($Request->hasFile('anh')) {
+            $anh = $Request->anh;
+//            kiểm tra xem file cừa up lên có phải file jpg(png) hay không
+//            if ($anh->getClientOriginalExtension('anh') == 'JPG')
+//            {
+//                //đoạn code thực thi
+//            }
+            $anh -> move(public_path('/shop/images/'), $anh->getClientOriginalName());
+            $link = 'shop/images/'.$anh->getClientOriginalName();
+            $product->linkAnh = $link;
+        } else {
+            $product->linkAnh = $product->linkAnh;
+        }
 
         $product->save();
         return redirect()->route('addproduct')-> with(['flash_level'=>'success','flash_message'=>'Thêm sản phẩm thành công!']);

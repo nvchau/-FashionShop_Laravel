@@ -9,7 +9,7 @@ class productModel extends Model
 //    protected $table = 'product';
 //    protected $filltable = [
 //        'id',
-//        'typeproduct_id',
+//        'id_type',
 //        'ten',
 //        'gia',
 //        'moTa',
